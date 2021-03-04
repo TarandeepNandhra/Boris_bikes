@@ -29,8 +29,14 @@ describe 'DockingStation' do
     # Guard condition - capacity
 
     it 'fails when default set capacity is reached' do
-      large_docking_station = DockingStation.new('large')
-      expect { (DockingStation::DEFAULT_CAPACITY + 1).times { large_docking_station.dock(Bike.new) } }.to raise_error("Cannot dock bike, at capacity")
+      normal_docking_station = DockingStation.new('normal')
+      expect { (DockingStation::DEFAULT_CAPACITY + 1).times { normal_docking_station.dock(Bike.new) } }.to raise_error("Cannot dock bike, at capacity")
+    end
+
+    it 'can dock bikes up to a custom capacity DockingStation' do
+      large_docking_station = DockingStation.new('large', [], 100)
+      100.times { large_docking_station.dock(Bike.new)}
+      expect(large_docking_station.storage.length).to eq(100)
     end
   end
 end
