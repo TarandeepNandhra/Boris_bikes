@@ -1,7 +1,9 @@
 class DockingStation
   attr_accessor :name, :storage, :capacity
 
-  def initialize(name, storage=[], capacity=20)
+  DEFAULT_CAPACITY = 20
+
+  def initialize(name, storage=[], capacity=DEFAULT_CAPACITY)
     @name = name
     @storage = storage
     @capacity = capacity

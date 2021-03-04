@@ -30,7 +30,7 @@ describe 'DockingStation' do
 
     it 'fails when default set capacity is reached' do
       large_docking_station = DockingStation.new('large')
-      expect { 21.times { large_docking_station.dock(Bike.new) } }.to raise_error("Cannot dock bike, at capacity")
+      expect { (DockingStation::DEFAULT_CAPACITY + 1).times { large_docking_station.dock(Bike.new) } }.to raise_error("Cannot dock bike, at capacity")
     end
   end
 end
