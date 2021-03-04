@@ -1,7 +1,7 @@
 class DockingStation
   attr_accessor :name, :storage, :capacity
 
-  def initialize(name, storage=[], capacity=1)
+  def initialize(name, storage=[], capacity=20)
     @name = name
     @storage = storage
     @capacity = capacity
@@ -32,7 +32,7 @@ end
 class Bike
 attr_accessor :name
 
-  def initialize(name)
+  def initialize(name='test')
     @name = name
   end
 
