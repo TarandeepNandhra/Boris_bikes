@@ -14,15 +14,31 @@ describe 'DockingStation' do
     it "fails if storage is empty" do
       expect { central.release_bike }.to raise_error("No bikes available")
     end
+
+    it 'fails if first bike to release is broken' do
+      bike = Bike.new('bike')
+      bike.report
+      central.dock(bike)
+      expect { central.release_bike }.to raise_error("Bike is broken!")
+    end
   end
 
   describe 'dock' do
 
-    it "stores a bike in a docking station" do
+    it 'accepts broken bikes' do
       expect do
-        unicycle = Bike.new('unicycle')
+        bike = Bike.new
+        bike.report
+        central.dock(bike)
+        expect(central.storage[0]).to be_kind_of(Bike)
+      end
+    end
+
+    it "stores a working bike in a docking station" do
+      expect do
+        unicycle = Bike.new
         central.dock(unicycle)
-        expect(entral.storage[0]).to eq("unicycle")
+        expect(central.storage[0]).to be_kind_of(Bike)
       end
     end
 

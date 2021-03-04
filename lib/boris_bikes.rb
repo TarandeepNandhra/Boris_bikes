@@ -15,29 +15,35 @@ class DockingStation
 
   def dock(bike)
     fail "Cannot dock bike, at capacity" if self.full?
-    self.storage << bike.name
+    self.storage << bike
   end
 
   private def empty?
-    self.storage != [] ? true : false
+    self.storage == [] ? true : false
   end
 
   def release_bike
-    self.storage[0] if self.empty?
-    fail "No bikes available"
+    fail "No bikes available" if self.empty?
+    fail "Bike is broken!" unless self.storage[0].working?
+    self.storage[0]
   end
 
 end
 
 class Bike
-attr_accessor :name
+attr_accessor :name, :condition
 
-  def initialize(name='test')
+  def initialize(name='test', condition=true)
     @name = name
+    @condition = condition
   end
 
   def working?
-    true
+    self.condition ? true : false
+  end
+
+  def report
+    self.condition = false
   end
 
 end
