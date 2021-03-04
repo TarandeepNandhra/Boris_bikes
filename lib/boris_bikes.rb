@@ -7,24 +7,22 @@ class DockingStation
     @capacity = capacity
   end
 
-  def dock(bike)
-    if self.storage.length == self.capacity
-      fail "Cannot dock bike, at capacity"
-    else
-      self.storage << bike.name
-    end
+  private def full?
+    self.storage.length == self.capacity ? true : false
   end
 
-  def is_there_a_bike?
+  def dock(bike)
+    fail "Cannot dock bike, at capacity" if self.full?
+    self.storage << bike.name
+  end
+
+  private def empty?
     self.storage != [] ? true : false
   end
 
   def release_bike
-    if self.is_there_a_bike?
-      self.storage[0]
-    else
-      fail "No bikes available"
-    end
+    self.storage[0] if self.empty?
+    fail "No bikes available"
   end
 
 end
