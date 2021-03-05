@@ -31,7 +31,7 @@ class DockingStation
 end
 
 class Bike
-attr_accessor :name, :condition
+  attr_accessor :name, :condition
 
   def initialize(name='test', condition=true)
     @name = name
@@ -46,4 +46,22 @@ attr_accessor :name, :condition
     self.condition = false
   end
 
+end
+
+class Garage
+  # storage
+
+  # repair (bike's condition)
+
+  # make doubles of Bike
+end
+
+class Van
+  # storage
+
+  # pick_up_bikes(broken/working)
+  # collect(garage, dockingstation) (from Garage (if fixed) to DockingStation)
+  # deliver(dockingstation, garage) (from DockingStation (if broken) to Garage)
+
+  # make doubles of Garage, DockingStation and Bike
 end
