@@ -2,13 +2,14 @@ require 'boris_bikes.rb'
 
 describe 'DockingStation' do
   let(:central) { DockingStation.new 'central'}
+  let(:bike) { double(:bike) }
 
   describe 'release_bike' do
-    # Guard condition - bikes aren't allowed to release bikes!
 
-    it "only works on instances of a DockingStation" do
-      bike = Bike.new('error')
-      expect { bike.release_bike }.to raise_error(NoMethodError)
+    it "releases bike" do
+      allow(bike).to receive(:working?).and_return(true)
+      central.dock(bike)
+      expect(central.release_bike).to eq bike
     end
 
     it "fails if storage is empty" do
@@ -16,9 +17,11 @@ describe 'DockingStation' do
     end
 
     it 'fails if first bike to release is broken' do
-      bike = Bike.new('bike')
-      bike.report
-      central.dock(bike)
+      tricycle = double(:condition => true)
+      allow(tricycle).to receive(:report)
+      allow(tricycle).to receive(:working?).and_return(false)
+      tricycle.report
+      central.dock(tricycle)
       expect { central.release_bike }.to raise_error("Bike is broken!")
     end
   end
@@ -27,7 +30,6 @@ describe 'DockingStation' do
 
     it 'accepts broken bikes' do
       expect do
-        bike = Bike.new
         bike.report
         central.dock(bike)
         expect(central.storage[0]).to be_kind_of(Bike)
@@ -36,8 +38,7 @@ describe 'DockingStation' do
 
     it "stores a working bike in a docking station" do
       expect do
-        unicycle = Bike.new
-        central.dock(unicycle)
+        central.dock(bike)
         expect(central.storage[0]).to be_kind_of(Bike)
       end
     end
@@ -46,12 +47,12 @@ describe 'DockingStation' do
 
     it 'fails when default set capacity is reached' do
       normal_docking_station = DockingStation.new('normal')
-      expect { (DockingStation::DEFAULT_CAPACITY + 1).times { normal_docking_station.dock(Bike.new) } }.to raise_error("Cannot dock bike, at capacity")
+      expect { (DockingStation::DEFAULT_CAPACITY + 1).times { normal_docking_station.dock(bike) } }.to raise_error("Cannot dock bike, at capacity")
     end
 
     it 'can dock bikes up to a custom capacity DockingStation' do
       large_docking_station = DockingStation.new('large', [], 100)
-      100.times { large_docking_station.dock(Bike.new)}
+      100.times { large_docking_station.dock(bike)}
       expect(large_docking_station.storage.length).to eq(100)
     end
   end
